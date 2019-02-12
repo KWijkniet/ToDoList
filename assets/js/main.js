@@ -5,48 +5,6 @@ app.controller('MainController', function($scope, $http, $timeout) {
 
     $scope.tables = [];
 
-    $scope.UpdateTitle = function(table, elem){
-        var newValue = elem.currentTarget.innerHTML;
-        UpdateTable(table, newValue);
-    }
-
-    $scope.UpdateItem = function(item, elem){
-        var newValue = elem.currentTarget.innerHTML;
-        UpdateItem(item, newValue);
-    }
-
-    $scope.CreateItem = function(tableID){
-        var req = {
-            method: "GET",
-            url: baseUrl + "dashboard/CreateItem",
-            headers: {
-                "Content-Type":undefined
-            },
-            data: {
-                'table_id': tableID
-            }
-        }
-        $http(req).then(function successCallback(response){
-            console.log(response.data);
-            for(var i = 0; i < $scope.tables.length; i++){
-                if($scope.tables[i].id == tableID){
-                    var content = $scope.tables[i].content;
-                    var item = {
-                        'id': response.data,
-                        'name': "placeholder",
-                        'completed': 0
-                    };
-                    content.push(item);
-                }
-            }
-            $scope.tables = response.data;
-        }, function errorCallback(response){});
-    }
-
-    $scope.CreateTable = function(){
-
-    }
-
     GetItems();
     function GetItems(){
         var req = {
@@ -61,7 +19,35 @@ app.controller('MainController', function($scope, $http, $timeout) {
         }, function errorCallback(response){});
     }
 
-    function UpdateItem(item, value){
+    $scope.UpdateTitle = function(table, elem){
+        var newValue = elem.currentTarget.innerHTML;
+        var req = {
+            method: "POST",
+            url: baseUrl + "dashboard/UpdateTable",
+            headers: {
+                "Content-Type":undefined
+            },
+            data: {
+                'id': item.id,
+                'value': newValue
+            }
+        }
+        $http(req).then(function successCallback(response){
+            for(var i = 0; i < $scope.tables.length; i++){
+                var table = $scope.tables[i];
+                if(table.id == item.id){
+                    table.name = newValue;
+                }
+            }
+        }, function errorCallback(response){});
+    }
+
+    $scope.UpdateItem = function(item, elem){
+        var newValue = elem.currentTarget.innerHTML;
+
+        if(item['id'] != undefined){
+            item = item.id;
+        }
         var req = {
             method: "POST",
             url: baseUrl + "dashboard/UpdateItem",
@@ -70,7 +56,7 @@ app.controller('MainController', function($scope, $http, $timeout) {
             },
             data: {
                 'id': item,
-                'value': value
+                'value': newValue
             }
         }
         $http(req).then(function successCallback(response){
@@ -80,7 +66,7 @@ app.controller('MainController', function($scope, $http, $timeout) {
                     for(var r = 0; r < table.content.length; r++){
                         var content = table.content[r];
                         if(content.id == item.id){
-                            content.name = value;
+                            content.name = newValue;
                         }
                     }
                 }
@@ -88,25 +74,66 @@ app.controller('MainController', function($scope, $http, $timeout) {
         }, function errorCallback(response){});
     }
 
-    function UpdateTable(item, value){
+    $scope.CreateItem = function(tableID){
+        if(tableID['id'] != undefined){
+            tableID = tableID.id;
+        }
         var req = {
             method: "POST",
-            url: baseUrl + "dashboard/UpdateTable",
+            url: baseUrl + "dashboard/CreateItem",
             headers: {
                 "Content-Type":undefined
             },
             data: {
-                'id': item.id,
-                'value': value
+                'table_id': tableID
             }
         }
         $http(req).then(function successCallback(response){
             for(var i = 0; i < $scope.tables.length; i++){
-                var table = $scope.tables[i];
-                if(table.id == item.id){
-                    table.name = value;
+                if($scope.tables[i].id['id'] != undefined){
+                    $scope.tables[i].id = $scope.tables[i].id.id;
                 }
+                if($scope.tables[i].id == tableID){
+                    if($scope.tables[i].content == undefined){
+                        $scope.tables[i].content = [];
+                    }
+                    var item = {
+                        'id': response.data,
+                        'name': "placeholder",
+                        'completed': 0
+                    };
+                    $scope.tables[i].content.push(item);
+                }
+                console.log($scope.tables[i]);
             }
         }, function errorCallback(response){});
+    }
+
+    $scope.CreateTable = function(){
+        var req = {
+            method: "GET",
+            url: baseUrl + "dashboard/CreateTable",
+            headers: {
+                "Content-Type":undefined
+            }
+        }
+        $http(req).then(function successCallback(response){
+            var item = {
+                'id': response.data,
+                'name': "placeholder"
+            };
+            $scope.tables.push(item);
+        }, function errorCallback(response){});
+    }
+
+    $scope.DeleteItem = function(){
+        var req = {
+            method: "GET",
+            url: baseUrl + "dashboard/DeleteItem",
+            headers: {
+                "Content-Type":undefined
+            }
+        }
+        $http(req).then(function successCallback(response){}, function errorCallback(response){});
     }
 });

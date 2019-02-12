@@ -34,6 +34,10 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
+	public function CreateTable(){
+		echo json_encode($this->ToDo->CreateTable());
+	}
+
 	public function GetUserTables(){
 		$tables = $this->ToDo->GetUserTables(0);
 		if(isset($tables)){
