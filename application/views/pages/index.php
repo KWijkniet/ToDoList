@@ -1,29 +1,13 @@
-<!-- <div class="container" ng-controller="HomeController">
-    <div class="col" style='max-width:'>
-        <div class="list-group todo-list">
-            <a href="#" class="list-group-item list-group-item-action active">Cras justo odio</a>
-            <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-            <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-        </div>
-    </div>
-    <div class="col">
-        <div class="list-group todo-list">
-            <a href="#" class="list-group-item list-group-item-action active">Cras justo odio</a>
-            <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-            <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-        </div>
-    </div>
-    <div class="col">
-        <div class="list-group todo-list">
-            <a href="#" class="list-group-item list-group-item-action active">Cras justo odio</a>
-            <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-            <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-        </div>
-    </div>
-</div> -->
+<div class="center-page" ng-controller="MainController">
+    <div class="center-container">
+        <div class="todo-list" ng-repeat="x in tables">
+            <ul class="list-group">
+                <li class="list-group-item active disabled" ng-blur="UpdateTitle(x, $event)" contenteditable="true" ng-bind="x.name"></li>
 
-<div class="center-page" style="background-color: black;">
-    <div class="center-container" style="background-color: red;">
-        <div class="todo-list" style="background-color: yellow;">test</div>
+                <li class="list-group-item" ng-repeat="r in x.content" ng-blur="UpdateItem(r.id, $event)" ngModel="item" contenteditable="true" ng-bind="r.name"></li>
+
+                <li class="list-group-item" ng-click="CreateItem()" contenteditable="false" style="text-align: center;">+</li>
+            </ul>
+        </div>
     </div>
 </div>

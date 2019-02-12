@@ -13,11 +13,27 @@ body{
 }
 
 .center-container{
-    display: block;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    display: flex;
     width: 80%;
     margin: 0 auto;
 }
 
 .todo-list{
-    min-height: 500px;
+    min-height: 350px;
+    width: 350px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.list-group-item{
+    cursor: pointer;
+    transition: .15s all linear;
+}
+
+.list-group-item:not(.active):hover{
+    background-color: #f8f9fa;
+    transition: .15s all linear;
 }
