@@ -27,6 +27,13 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
+	public function CreateItem(){
+		$data = $this->GetPostData();
+		if(isset($data)){
+			echo json_encode($this->ToDo->CreateItem($data['table_id']));
+		}
+	}
+
 	public function GetUserTables(){
 		$tables = $this->ToDo->GetUserTables(0);
 		if(isset($tables)){

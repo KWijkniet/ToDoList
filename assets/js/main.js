@@ -16,7 +16,31 @@ app.controller('MainController', function($scope, $http, $timeout) {
     }
 
     $scope.CreateItem = function(tableID){
-
+        var req = {
+            method: "GET",
+            url: baseUrl + "dashboard/CreateItem",
+            headers: {
+                "Content-Type":undefined
+            },
+            data: {
+                'table_id': tableID
+            }
+        }
+        $http(req).then(function successCallback(response){
+            console.log(response.data);
+            for(var i = 0; i < $scope.tables.length; i++){
+                if($scope.tables[i].id == tableID){
+                    var content = $scope.tables[i].content;
+                    var item = {
+                        'id': response.data,
+                        'name': "placeholder",
+                        'completed': 0
+                    };
+                    content.push(item);
+                }
+            }
+            $scope.tables = response.data;
+        }, function errorCallback(response){});
     }
 
     $scope.CreateTable = function(){

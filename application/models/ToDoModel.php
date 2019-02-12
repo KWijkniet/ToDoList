@@ -29,4 +29,18 @@ class ToDoModel extends CI_Model {
         $this->db->where('id', $id);
         $this->db->update('Tables');
     }
+
+    public function CreateItem($id){
+        $data = array(
+            'table_id' => $id,
+            'name' => '',
+            'completed' => '0'
+        );
+        $this->db->insert('Items', $data);
+
+        $this->db->select_max('id');
+        $this->db->limit(1);
+        $query = $this->db->get('Items');
+        return $query->row();
+    }
 }
