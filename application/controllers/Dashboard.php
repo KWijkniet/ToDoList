@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+//search for "/* $_SESSION['user']['id'] */" and enable these if you want to make user only ToDoList
+
 class Dashboard extends CI_Controller {
 	public function __construct(){
         parent::__construct();
@@ -11,6 +13,18 @@ class Dashboard extends CI_Controller {
 	public function index()
 	{
 		$this->LoadPage('index');
+	}
+
+	public function GetUserTables(){
+		$tables = array();
+		$tables = $this->ToDo->GetUserTables($_SESSION['user']['id']);
+		if(isset($tables)){
+			for($i = 0; $i < count($tables); $i++){
+				$tables[$i] = (array)$tables[$i];
+				$tables[$i]['content'] = (array)$this->ToDo->GetTablesRows($tables[$i]['id']);
+			}
+		}
+		echo json_encode($tables);
 	}
 
 	public function UpdateItem(){
@@ -35,18 +49,28 @@ class Dashboard extends CI_Controller {
 	}
 
 	public function CreateTable(){
-		echo json_encode($this->ToDo->CreateTable());
+		echo json_encode($this->ToDo->CreateTable($_SESSION['user']['id']));
 	}
 
-	public function GetUserTables(){
-		$tables = $this->ToDo->GetUserTables(0);
-		if(isset($tables)){
-			for($i = 0; $i < count($tables); $i++){
-				$tables[$i] = (array)$tables[$i];
-				$tables[$i]['content'] = (array)$this->ToDo->GetTablesRows($tables[$i]['id']);
-			}
+	public function DeleteItem(){
+		$data = $this->GetPostData();
+		if(isset($data)){
+			$this->ToDo->DeleteItem($data['id']);
 		}
-		echo json_encode($tables);
+	}
+
+	public function DeleteTable(){
+		$data = $this->GetPostData();
+		if(isset($data)){
+			$this->ToDo->DeleteTable($data['id']);
+		}
+	}
+
+	public function AcceptItem(){
+		$data = $this->GetPostData();
+		if(isset($data)){
+			$this->ToDo->AcceptItem($data['id'], $data['value']);
+		}
 	}
 
     public function GetPostData(){

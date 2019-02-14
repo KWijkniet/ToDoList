@@ -1,12 +1,13 @@
 var baseUrl = "http://localhost/ToDoList/";
 var app = angular.module('myApp', []);
 
-app.controller('MainController', function($scope, $http, $timeout) {
+app.controller('MainController', function($scope, $http) {
+    $scope.filterReverse = false;
+    $scope.filterType = '';
 
     $scope.tables = [];
 
-    GetItems();
-    function GetItems(){
+    $scope.GetItems = function(){
         var req = {
             method: "GET",
             url: baseUrl + "dashboard/GetUserTables",
@@ -19,7 +20,7 @@ app.controller('MainController', function($scope, $http, $timeout) {
         }, function errorCallback(response){});
     }
 
-    $scope.UpdateTitle = function(table, elem){
+    $scope.UpdateTitle = function(item, elem){
         var newValue = elem.currentTarget.innerHTML;
         var req = {
             method: "POST",
@@ -98,13 +99,13 @@ app.controller('MainController', function($scope, $http, $timeout) {
                         $scope.tables[i].content = [];
                     }
                     var item = {
-                        'id': response.data,
+                        'id': response.data.id,
                         'name': "placeholder",
-                        'completed': 0
+                        'completed': 0,
+                        'table_id': tableID
                     };
                     $scope.tables[i].content.push(item);
                 }
-                console.log($scope.tables[i]);
             }
         }, function errorCallback(response){});
     }
@@ -119,21 +120,84 @@ app.controller('MainController', function($scope, $http, $timeout) {
         }
         $http(req).then(function successCallback(response){
             var item = {
-                'id': response.data,
+                'id': response.data.id,
                 'name': "placeholder"
             };
             $scope.tables.push(item);
         }, function errorCallback(response){});
     }
 
-    $scope.DeleteItem = function(){
+    $scope.DeleteItem = function(id, table_id){
         var req = {
-            method: "GET",
+            method: "POST",
             url: baseUrl + "dashboard/DeleteItem",
             headers: {
                 "Content-Type":undefined
+            },
+            data: {
+                'id': id
+            }
+        }
+        $http(req).then(function successCallback(response){
+            for(var i = 0; i < $scope.tables.length; i++){
+                var table = $scope.tables[i];
+                if(table.id == table_id){
+                    for(var r = 0; r < table.content.length; r++){
+                        if(table.content[r].id == id){
+                            table.content.splice(r, 1);
+                        }
+                    }
+                }
+            }
+        }, function errorCallback(response){});
+    }
+
+    $scope.AcceptItem = function(item, elem){
+        var elem = elem.currentTarget;
+        var elems = elem.parentNode.getElementsByTagName('p');
+        if(item.completed == 1){
+            item.completed = 0;
+            for(var i = 0; i < elems.length; i++){
+                elems[i].classList.remove("strikethrough");
+            }
+        }else{
+            item.completed = 1;
+            for(var i = 0; i < elems.length; i++){
+                elems[i].classList.add("strikethrough");
+            }
+        }
+
+        var req = {
+            method: "POST",
+            url: baseUrl + "dashboard/AcceptItem",
+            headers: {
+                "Content-Type":undefined
+            },
+            data: {
+                'id': item.id,
+                'value': item.completed
             }
         }
         $http(req).then(function successCallback(response){}, function errorCallback(response){});
+    }
+
+    $scope.DeleteTable = function(id){
+        var req = {
+            method: "POST",
+            url: baseUrl + "dashboard/DeleteTable",
+            headers: {
+                "Content-Type":undefined
+            },
+            data: {
+                'id': id
+            }
+        }
+        $http(req).then(function successCallback(response){
+            for(var i = 0; i < $scope.tables.length; i++){
+                if($scope.tables[i].id == id){
+                    $scope.tables.splice(i, 1);
+                }
+            }
+        }, function errorCallback(response){});
     }
 });

@@ -21,22 +21,35 @@ body{
     margin: 0 auto;
 }
 
+.admin-container{
+    width: 100vw;
+    height: 100vh;
+}
+
 .todo-list{
     position: relative;
     min-height: 350px;
-    width: 350px;
+    width: 400px;
     margin-left: 10px;
     margin-right: 10px;
 }
 
 .list-group-item{
-    cursor: pointer;
     transition: .15s all linear;
+}
+
+.list-group-item p{
+    cursor: pointer;
 }
 
 .list-group-item:not(.active):hover{
     background-color: #f8f9fa;
     transition: .15s all linear;
+}
+
+.strikethrough{
+    text-decoration: line-through !important;
+    color: gray !important;
 }
 
 .add-table-button{
@@ -54,13 +67,50 @@ body{
     color: #f8f9fa !important;
 }
 
+.list-time{
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    width: 80px;
+}
+
 .list-text{
     display: inline-block;
     margin: 0;
     padding: 0;
-    width: calc(100% - 25px);
+    width: calc(100% - 120px);
+}
+
+.list-title{
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    width: calc(100% - 50px);
+    text-align: center;
 }
 
 .delete-table-button{
+    color: white !important;
+    margin-right: 10px;
+}
+
+.delete-item-button{
+    float: right;
+}
+
+.filter-buttons{
+    color: white !important;
+    width: 150px;
+    height: 30px;
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.left{
+    float: left;
+}
+
+.right{
     float: right;
 }

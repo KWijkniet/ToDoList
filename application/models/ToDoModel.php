@@ -24,6 +24,12 @@ class ToDoModel extends CI_Model {
         $this->db->update('Items');
     }
 
+    public function AcceptItem($id, $value){
+        $this->db->set('completed', $value);
+        $this->db->where('id', $id);
+        $this->db->update('Items');
+    }
+
     public function UpdateTable($id, $value){
         $this->db->set('name', $value);
         $this->db->where('id', $id);
@@ -44,9 +50,10 @@ class ToDoModel extends CI_Model {
         return $query->row();
     }
 
-    public function CreateTable(){
+    public function CreateTable($id){
         $data = array(
-            'name' => 'placeholder'
+            'name' => 'placeholder',
+            'user_id' => $id
         );
         $this->db->insert('Tables', $data);
 
@@ -54,5 +61,18 @@ class ToDoModel extends CI_Model {
         $this->db->limit(1);
         $query = $this->db->get('Tables');
         return $query->row();
+    }
+
+    public function DeleteItem($id){
+        $this->db->where('id', $id);
+        $this->db->delete('Items');
+    }
+
+    public function DeleteTable($id){
+        $this->db->where('table_id', $id);
+        $this->db->delete('Items');
+
+        $this->db->where('id', $id);
+        $this->db->delete('Tables');
     }
 }
