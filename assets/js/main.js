@@ -2,12 +2,13 @@ var baseUrl = "http://localhost/ToDoList/";
 var app = angular.module('myApp', []);
 
 app.controller('MainController', function($scope, $http) {
-    $scope.filterReverse = false;
-    $scope.filterType = '';
+    $scope.filterReverse = [];
+    $scope.filterType = [];
 
     $scope.tables = [];
 
     $scope.GetItems = function(){
+        $scope.tables = [];
         var req = {
             method: "GET",
             url: baseUrl + "dashboard/GetUserTables",
