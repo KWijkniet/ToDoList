@@ -75,6 +75,38 @@ app.controller('MainController', function($scope, $http) {
         }, function errorCallback(response){});
     }
 
+    $scope.UpdateItemTime = function(item, elem){
+        var newValue = elem.currentTarget.innerHTML;
+
+        if(item['id'] != undefined){
+            item = item.id;
+        }
+        var req = {
+            method: "POST",
+            url: baseUrl + "dashboard/UpdateItemTime",
+            headers: {
+                "Content-Type":undefined
+            },
+            data: {
+                'id': item,
+                'value': newValue
+            }
+        }
+        $http(req).then(function successCallback(response){
+            for(var i = 0; i < $scope.tables.length; i++){
+                var table = $scope.tables[i];
+                if(table.id == item.table_id){
+                    for(var r = 0; r < table.content.length; r++){
+                        var content = table.content[r];
+                        if(content.id == item.id){
+                            content.time = newValue;
+                        }
+                    }
+                }
+            }
+        }, function errorCallback(response){});
+    }
+
     $scope.CreateItem = function(tableID){
         if(tableID['id'] != undefined){
             tableID = tableID.id;

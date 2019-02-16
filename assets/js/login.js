@@ -16,9 +16,10 @@ app.controller('LoginController', function($scope, $http) {
         }
     }
     $http(req).then(function successCallback(response){
-        if(response.data != "null"){
+        if(response.data != "null" && response.data != null){
             $scope.isLoggedIn = true;
             $scope.user = response.data;
+            console.log("user is already Loggedin");
 
             if($scope.user['role_id'] == 1){
                 $scope.GetUsers();
@@ -27,6 +28,7 @@ app.controller('LoginController', function($scope, $http) {
             }
         }else{
             $scope.isLoggedIn = false;
+            console.log("user is not Loggedin");
         }
     }, function errorCallback(response){});
 
@@ -89,9 +91,10 @@ app.controller('LoginController', function($scope, $http) {
             }
         }
         $http(req).then(function successCallback(response){
-            if(response.data == true || response.data == "true"){
+            if(response.data != "null" && response.data != null){
                 $scope.isLoggedIn = true;
                 $scope.isRegister = false;
+                $scope.user = response.data;
                 $scope.GetItems();
             }else{
                 console.log(response.data);

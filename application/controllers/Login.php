@@ -32,7 +32,7 @@ class Login extends CI_Controller {
             $password = $data['password'];
 
             $foundUser = (array)$this->Login->GetUserByEmail($email);
-            if(isset($foundUser)){
+            if(isset($foundUser['salt_key'])){
                 $protectedPass = md5($password . $foundUser['salt_key']);
                 if($foundUser['password'] == $protectedPass){
                     $_SESSION['user'] = $foundUser;
@@ -59,12 +59,12 @@ class Login extends CI_Controller {
                 $protectedPass = md5($password . $createUser['salt_key']);
                 $this->Login->SetUserPassword($createUser['id'], $protectedPass);
                 $_SESSION['user'] = $createUser;
-                echo true;
+				echo json_encode($createUser);
             }else{
-                echo "Couldn't create an account";
+                echo "null";
             }
         }else{
-            echo "Error...";
+            echo "null";
         }
     }
 

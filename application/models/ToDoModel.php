@@ -24,6 +24,12 @@ class ToDoModel extends CI_Model {
         $this->db->update('Items');
     }
 
+    public function UpdateItemTime($id, $value){
+        $this->db->set('time', $value);
+        $this->db->where('id', $id);
+        $this->db->update('Items');
+    }
+
     public function AcceptItem($id, $value){
         $this->db->set('completed', $value);
         $this->db->where('id', $id);

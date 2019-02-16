@@ -46,7 +46,7 @@
                 <li class="list-group-item" ng-repeat="r in x.content | orderBy:filterType:filterReverse track by $index">
                     <input type="checkbox" ng-click="AcceptItem(r, $event)" ng-if="r.completed == 1" checked>
                     <input type="checkbox" ng-click="AcceptItem(r, $event)" ng-if="r.completed == 0">
-                    <p class="list-time" ng-class="{'strikethrough': r.completed == 1}">(<span ng-blur="UpdateItemTime(r.id, $event)" onkeydown="if(event.keyCode==13){ $(this).blur(); return false;}" contenteditable="true">{{r.time}}</span> min)</p>
+                    <p class="list-time" ng-class="{'strikethrough': r.completed == 1}">(<span ng-blur="UpdateItemTime(r.id, $event)" onkeydown="if(event.keyCode==13){ $(this).blur(); return false;}" contenteditable="true">{{(r.time == null ? 0 : r.time)}}</span> min)</p>
                     <p class="list-text" ng-class="{'strikethrough': r.completed == 1}" ng-blur="UpdateItem(r.id, $event)" onkeydown="if(event.keyCode==13){ $(this).blur(); return false;}" contenteditable="true" ng-bind="r.name"></p>
                     <a href="#" class="delete-item-button" ng-click="DeleteItem(r.id, r.table_id);"><i class="fas fa-minus"></i></a>
                 </li>
