@@ -1,4 +1,5 @@
 <div class="center-page" ng-controller="LoginController">
+    <!-- Show login page -->
     <div class="center-container" ng-show="isLoggedIn == false && isRegister == false">
         <form action="" method="" name="logins">
             <div class="form-group">
@@ -14,6 +15,7 @@
             <button type="button" class="btn btn-primary" ng-click="RegisterPage();">Register</button>
         </form>
     </div>
+    <!-- Show register page -->
     <div class="center-container" ng-show="isLoggedIn == false && isRegister == true">
         <form action="" method="" name="registers">
             <div class="form-group">
@@ -29,6 +31,7 @@
             <button type="button" class="btn btn-primary" ng-click="LoginPage();">Back</button>
         </form>
     </div>
+    <!-- Show Admin page -->
     <div class="center-container" ng-show="isLoggedIn == true && user.role_id == 2">
         <button class="btn btn-primary logout-button" type="button" ng-click="Logout()">Logout</button>
         <a ng-show="tables.length == 0" href="#" class="" ng-click="CreateTable();"><i class="fas fa-plus"></i></a>
@@ -54,6 +57,7 @@
             </ul>
         </div>
     </div>
+    <!-- Show User page -->
     <div class="center-container" ng-show="isLoggedIn == true && user.role_id == 1 && isViewing == false">
         <button class="btn btn-primary logout-button" type="button" ng-click="Logout()">Logout</button>
         <div class="todo-list">
@@ -77,6 +81,7 @@
             </ul>
         </div>
     </div>
+    <!-- Show User page as admin -->
     <div class="center-container" ng-show="isLoggedIn == true && user.role_id == 1 && isViewing == true">
         <button class="btn btn-primary logout-button" type="button" ng-click="Logout()">Logout</button>
         <button class="btn btn-primary back-button" type="button" ng-click="AdminPage()">Back</button>

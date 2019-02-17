@@ -10,15 +10,18 @@ class Dashboard extends CI_Controller {
         $this->load->model('ToDoModel', 'ToDo');
     }
 
+	//show page
 	public function index()
 	{
 		$this->LoadPage('index');
 	}
 
+	//get user tables
 	public function GetUserTables(){
 		$tables = array();
 		$tables = $this->ToDo->GetUserTables($_SESSION['user']['id']);
 		if(isset($tables)){
+			//get content (items) of each table
 			for($i = 0; $i < count($tables); $i++){
 				$tables[$i] = (array)$tables[$i];
 				$tables[$i]['content'] = (array)$this->ToDo->GetTablesRows($tables[$i]['id']);
@@ -27,6 +30,7 @@ class Dashboard extends CI_Controller {
 		echo json_encode($tables);
 	}
 
+	//update item (name)
 	public function UpdateItem(){
 		$data = $this->GetPostData();
 		if(isset($data)){
@@ -34,6 +38,7 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
+	//update item (time)
 	public function UpdateItemTime(){
 		$data = $this->GetPostData();
 		if(isset($data)){
@@ -41,6 +46,7 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
+	//update table
 	public function UpdateTable(){
 		$data = $this->GetPostData();
 		if(isset($data)){
@@ -48,6 +54,7 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
+	//create item
 	public function CreateItem(){
 		$data = $this->GetPostData();
 		if(isset($data)){
@@ -55,10 +62,12 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
+	//create table
 	public function CreateTable(){
 		echo json_encode($this->ToDo->CreateTable($_SESSION['user']['id']));
 	}
 
+	//delete item
 	public function DeleteItem(){
 		$data = $this->GetPostData();
 		if(isset($data)){
@@ -66,6 +75,7 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
+	//delete table
 	public function DeleteTable(){
 		$data = $this->GetPostData();
 		if(isset($data)){
@@ -73,6 +83,7 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
+	//accept item
 	public function AcceptItem(){
 		$data = $this->GetPostData();
 		if(isset($data)){
@@ -80,6 +91,7 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
+	//get post data from js post
     public function GetPostData(){
         $postdata = file_get_contents("php://input");
         if(isset($postdata) && !empty($postdata)){
@@ -88,6 +100,7 @@ class Dashboard extends CI_Controller {
         return null;
     }
 
+	//easy to use page loading function (load page with templates based on given name)
 	public function LoadPage($pageName){
         $this->load->view('templates/pagetop');
 		$this->load->view('pages/'.$pageName);

@@ -1,5 +1,6 @@
 <?php
 class LoginModel extends CI_Model {
+    //get user by email
     public function GetUserByEmail($email){
         $this->db->select('*');
         $this->db->from('Users');
@@ -10,6 +11,7 @@ class LoginModel extends CI_Model {
         return $query->row();
     }
 
+    //create new user (default role_id = 2, meaning its a user)
     public function CreateUser($email){
         $data = array(
             'email' => $email,
@@ -25,12 +27,14 @@ class LoginModel extends CI_Model {
         return $query->row();
     }
 
+    //update password
     public function SetUserPassword($id, $pass){
         $this->db->set('password', $pass);
         $this->db->where('id', $id);
         $this->db->update('Users');
     }
 
+    //get all users
     public function GetUsers(){
         $this->db->select('*');
         $this->db->from('Users');
@@ -38,6 +42,7 @@ class LoginModel extends CI_Model {
         return $query->result();
     }
 
+    //toggle role_id
     public function ToggleAdmin($id, $value){
         $this->db->set('role_id', $value);
         $this->db->where('id', $id);
